@@ -251,7 +251,7 @@ export function ChatWindow(props: { conversationId: string }) {
                 }}
                 width={"240px"}
               >
-                <option value="openai_gpt_4o3_5_turbo">GPT-4o</option>
+                <option value="openai_gpt_4o">GPT-4o</option>
               </Select>
             )}
           </div>

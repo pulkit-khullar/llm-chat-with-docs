@@ -24,6 +24,7 @@ app.post("/ingest", ingestDocs)
 app.use('/api', router);
 
 const port = 3001;
+console.log("Hi")
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);

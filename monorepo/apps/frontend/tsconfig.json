@@ -1,26 +1,26 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es6", // Use ES6 or higher for modern JavaScript features
     "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
+      "dom", // DOM library for browser support
+      "dom.iterable", // For iterating over DOM collections
+      "esnext" // Use the latest JavaScript features
     ],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx"
+    "allowJs": true, // Allows JavaScript files to be compiled
+    "skipLibCheck": true, // Skip checking of library declaration files
+    "esModuleInterop": true, // Ensures compatibility with CommonJS and ES modules
+    "allowSyntheticDefaultImports": true, // Allow default imports from modules with no default export
+    "strict": true, // Enables all strict type-checking options
+    "forceConsistentCasingInFileNames": true, // Enforce consistent file naming
+    "noFallthroughCasesInSwitch": true, // Prevents fallthrough in switch statements
+    "module": "esnext", // Supports modern ES module syntax
+    "moduleResolution": "node", // Resolves modules in a Node.js-like environment
+    "resolveJsonModule": true, // Enables importing of JSON files
+    "isolatedModules": true, // Ensure each file is treated as its own module
+    "noEmit": true, // Prevents the compiler from emitting JavaScript files
+    "jsx": "react-jsx" // Enables JSX and new JSX transform for React 17+
   },
   "include": [
-    "src"
+    "src" // Specifies the source directory
   ]
 }

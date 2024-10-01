@@ -94,15 +94,25 @@ const createRetrieverChain = (llm: BaseChatModel, retriever: Runnable) => {
 };
 
 const formatDocs = (docs: Document[]) => {
-    return docs
-        .map((doc, i) => `<doc id='${i}'>${doc.pageContent}</doc>`)
-        .join("\n");
+    console.log(`CHECKING formatDocs`)
+
+    let x = docs
+    .map((doc, i) => `<doc id='${i}'>${doc.pageContent}</doc>`)
+    .join("\n");
+
+    console.log(x)
+    return x
 };
 
 const formatChatHistoryAsString = (history: BaseMessage[]) => {
-    return history
-        .map((message) => `${message._getType()}: ${message.content}`)
-        .join("\n");
+    console.log(`CHECKING formatChatHistoryAsString`)
+
+    let x = history
+    .map((message) => `${message._getType()}: ${message.content}`)
+    .join("\n");
+
+    console.log(x)
+    return x
 };
 
 const serializeHistory = (input: any) => {

@@ -5,6 +5,7 @@ import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { OpenAIEmbeddings } from "@langchain/openai";
 import { Embeddings } from "@langchain/core/embeddings";
 import { SitemapLoader } from "langchain/document_loaders/web/sitemap";
+import { PuppeteerWebBaseLoader } from "langchain/document_loaders/web/puppeteer";
 import { index } from './index';
 import { Chroma } from "@langchain/community/vectorstores/chroma";
 
@@ -13,16 +14,22 @@ export const ingestDocs = async (req: Request, res: Response) => {
   try {
     // Load Mettalex documents
     const loadLangSmithDocs = async (): Promise<Array<DocumentInterface>> => {
-      const loader = new RecursiveUrlLoader("https://docs.mettalex.com/docs/mettalexoverview", {
-        maxDepth: 8,
-        timeout: 600,
-      });
+      // const loader = new RecursiveUrlLoader("https://mettalex.com/", {
+      //   maxDepth: 8,
+      //   timeout: 600,
+      // });
+
+      const loader = new PuppeteerWebBaseLoader("https://mettalex.com/", {
+      })
       return loader.load();
     };
 
     // Load LangChain docs via sitemap
     const loadLangChainDocs = async (): Promise<Array<DocumentInterface>> => {
-      const loader = new SitemapLoader("https://docs.mettalex.com/");
+      // const loader = new SitemapLoader("https://docs.mettalex.com/");
+
+      const loader = new PuppeteerWebBaseLoader("https://docs.mettalex.com/", {
+      })
       return loader.load();
     };
 
@@ -33,8 +40,8 @@ export const ingestDocs = async (req: Request, res: Response) => {
       });
     };
 
-    const smithDocs = await loadLangSmithDocs();
-    console.debug(`Loaded ${smithDocs.length} docs from LangSmith`);
+    // const smithDocs = await loadLangSmithDocs();
+    // console.debug(`Loaded ${smithDocs.length} docs from LangSmith`);
 
     const langchainDocs = await loadLangChainDocs();
     console.debug(`Loaded ${langchainDocs.length} docs from documentation`);
@@ -50,12 +57,17 @@ export const ingestDocs = async (req: Request, res: Response) => {
     });
 
     const docsTransformed = await textSplitter.splitDocuments([
-      ...smithDocs,
+      // ...smithDocs,
       ...langchainDocs,
     ]);
 
+    console.debug('docsTransformed')
+    console.debug(docsTransformed)
+
     // Ensure 'source' and 'title' metadata are present
     for (const doc of docsTransformed) {
+      console.debug("doc")
+      console.debug(doc)
       doc.metadata.source = doc.metadata.source || "";
       doc.metadata.title = doc.metadata.title || "";
     }
