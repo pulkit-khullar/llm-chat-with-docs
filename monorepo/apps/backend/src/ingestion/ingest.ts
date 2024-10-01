@@ -25,10 +25,10 @@ export const ingestDocs = async (req: Request, res: Response) => {
     };
 
     // Load LangChain docs via sitemap
-    const loadLangChainDocs = async (): Promise<Array<DocumentInterface>> => {
+    const loadLangChainDocs = async (url: string): Promise<Array<DocumentInterface>> => {
       // const loader = new SitemapLoader("https://docs.mettalex.com/");
 
-      const loader = new PuppeteerWebBaseLoader("https://docs.mettalex.com/", {
+      const loader = new PuppeteerWebBaseLoader(url, {
       })
       return loader.load();
     };
@@ -43,22 +43,62 @@ export const ingestDocs = async (req: Request, res: Response) => {
     // const smithDocs = await loadLangSmithDocs();
     // console.debug(`Loaded ${smithDocs.length} docs from LangSmith`);
 
-    const langchainDocs = await loadLangChainDocs();
-    console.debug(`Loaded ${langchainDocs.length} docs from documentation`);
+    const langchainDocs1 = await loadLangChainDocs("https://docs.mettalex.com/");
+    const langchainDocs2 = await loadLangChainDocs("https://docs.mettalex.com/markdown-page");
+    const langchainDocs3 = await loadLangChainDocs("https://docs.mettalex.com/search");
+    const langchainDocs4 = await loadLangChainDocs("https://docs.mettalex.com/docs/AdvancedTradingStrategies/CreatingYourStrategy");
+    const langchainDocs5 = await loadLangChainDocs("https://docs.mettalex.com/docs/GettingStarted/TradingOnMettalexIntro");
+    const langchainDocs6 = await loadLangChainDocs("https://docs.mettalex.com/docs/mettalexoverview");
+    const langchainDocs7 = await loadLangChainDocs("https://docs.mettalex.com/docs/MTLXToken/MTLXTokennomics");
+    const langchainDocs8 = await loadLangChainDocs("https://docs.mettalex.com/docs/MTLXToken/MTLXTokenUtility");
+    const langchainDocs9 = await loadLangChainDocs("https://docs.mettalex.com/docs/TechnicalArchitecture/InitializingYourAccount");
+    const langchainDocs10 = await loadLangChainDocs("https://docs.mettalex.com/docs/TechnicalArchitecture/Middleware");
+    const langchainDocs11 = await loadLangChainDocs("https://docs.mettalex.com/docs/TechnicalArchitecture/TradingOnMettalex");
+    const langchainDocs12 = await loadLangChainDocs("https://docs.mettalex.com/resources/roadmap");
+    const langchainDocs13 = await loadLangChainDocs("https://mettalex.com/");
+    const langchainDocs14 = await loadLangChainDocs("https://mettalex.com/faq");
 
-    if (!langchainDocs.length) {
+    console.debug(`Loaded ${langchainDocs1.length} docs from documentation`);
+    console.debug(`Loaded ${langchainDocs2.length} docs from documentation`);
+    console.debug(`Loaded ${langchainDocs3.length} docs from documentation`);
+    console.debug(`Loaded ${langchainDocs4.length} docs from documentation`);
+    console.debug(`Loaded ${langchainDocs5.length} docs from documentation`);
+    console.debug(`Loaded ${langchainDocs6.length} docs from documentation`);
+    console.debug(`Loaded ${langchainDocs7.length} docs from documentation`);
+    console.debug(`Loaded ${langchainDocs8.length} docs from documentation`);
+    console.debug(`Loaded ${langchainDocs9.length} docs from documentation`);
+    console.debug(`Loaded ${langchainDocs10.length} docs from documentation`);
+    console.debug(`Loaded ${langchainDocs11.length} docs from documentation`);
+    console.debug(`Loaded ${langchainDocs12.length} docs from documentation`);
+    console.debug(`Loaded ${langchainDocs13.length} docs from documentation`);
+    console.debug(`Loaded ${langchainDocs14.length} docs from documentation`);
+
+    if (!langchainDocs1.length) {
       res.status(500).json({ error: "No LangChain documents were loaded." });
       return
     }
 
     const textSplitter = new RecursiveCharacterTextSplitter({
       chunkOverlap: 200,
-      chunkSize: 4000,
+      chunkSize: 1000,
     });
 
     const docsTransformed = await textSplitter.splitDocuments([
       // ...smithDocs,
-      ...langchainDocs,
+      ...langchainDocs1,
+      ...langchainDocs2,
+      ...langchainDocs3,
+      ...langchainDocs4,
+      ...langchainDocs5,
+      ...langchainDocs6,
+      ...langchainDocs7,
+      ...langchainDocs8,
+      ...langchainDocs9,
+      ...langchainDocs10,
+      ...langchainDocs11,
+      ...langchainDocs12,
+      ...langchainDocs13,
+      ...langchainDocs14,
     ]);
 
     console.debug('docsTransformed')
@@ -66,8 +106,6 @@ export const ingestDocs = async (req: Request, res: Response) => {
 
     // Ensure 'source' and 'title' metadata are present
     for (const doc of docsTransformed) {
-      console.debug("doc")
-      console.debug(doc)
       doc.metadata.source = doc.metadata.source || "";
       doc.metadata.title = doc.metadata.title || "";
     }
