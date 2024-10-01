@@ -159,9 +159,9 @@ export const stream_log = async (req: Request, res: Response) => {
         const { input, config } = req.body;
 
         let llm;
-        if (config.configurable.llm === "openai_gpt_3_5_turbo") {
+        if (config.configurable.llm === "openai_gpt_4o") {
             llm = new ChatOpenAI({
-                modelName: "gpt-3.5-turbo-1106",
+                modelName: "gpt-4o",
                 temperature: 0,
             });
         } else {
