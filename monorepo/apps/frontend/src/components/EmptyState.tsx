@@ -52,7 +52,7 @@ export function EmptyState(props: { onChoice: (question: string) => any }) {
               color={"gray.200"}
               textAlign={"center"}
             >
-              How many tokens are supported on Mettalex?
+              What is the name of Mettalex token?
             </Heading>
           </CardHeader>
         </Card>
@@ -95,7 +95,7 @@ export function EmptyState(props: { onChoice: (question: string) => any }) {
               color={"gray.200"}
               textAlign={"center"}
             >
-              What is Tokenomincs on Mettalex?
+              What is Mettalex Tokenomincs?
             </Heading>
           </CardHeader>
         </Card>

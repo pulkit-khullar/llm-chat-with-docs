@@ -80,7 +80,7 @@ export const ingestDocs = async (req: Request, res: Response) => {
 
     const textSplitter = new RecursiveCharacterTextSplitter({
       chunkOverlap: 200,
-      chunkSize: 1000,
+      chunkSize: 4000,
     });
 
     const docsTransformed = await textSplitter.splitDocuments([
