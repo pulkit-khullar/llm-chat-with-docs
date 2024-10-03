@@ -128,6 +128,7 @@ export function ChatWindow(props: { conversationId: string }) {
           includeNames: [sourceStepName],
         },
       );
+
       for await (const chunk of streamLog) {
         streamedResponse = applyPatch(streamedResponse, chunk.ops).newDocument;
         if (
@@ -137,7 +138,7 @@ export function ChatWindow(props: { conversationId: string }) {
         ) {
           sources = streamedResponse.logs[
             sourceStepName
-          ].final_output.output.map((doc: Record<string, any>) => ({
+          ].final_output.output.filter((source: Record<string, any>) => !source.metadata.source.includes("localhost")).map((doc: Record<string, any>) => ({
             url: doc.metadata.source,
             title: doc.metadata.title,
           }));
@@ -145,8 +146,11 @@ export function ChatWindow(props: { conversationId: string }) {
         if (streamedResponse.id !== undefined) {
           runId = streamedResponse.id;
         }
-        if (Array.isArray(streamedResponse?.streamed_output)) {
-          accumulatedMessage = streamedResponse.streamed_output.join("");
+        // if (Array.isArray(streamedResponse?.streamed_output)) {
+        //   accumulatedMessage = streamedResponse.streamed_output.join("");
+        // }
+        if (streamedResponse?.final_output?.output) {
+          accumulatedMessage = streamedResponse.final_output.output
         }
         const parsedResult = marked.parse(accumulatedMessage);
 
