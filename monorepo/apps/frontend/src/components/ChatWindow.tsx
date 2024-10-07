@@ -25,6 +25,8 @@ import { Select, Link } from "@chakra-ui/react";
 import { Source } from "./SourceBubble";
 import { apiBaseUrl } from "../utils/constants";
 
+import mtlxLogo from '../images/mtlx_logo.png'
+
 /**
  * Only Allow GPT 3.5 Turbo
  * Removed Model : fireworks_mixtral
@@ -249,14 +251,18 @@ export function ChatWindow(props: { conversationId: string }) {
         alignItems={"center"}
         marginTop={messages.length > 0 ? "" : "64px"}
       >
-        <Heading
-          fontSize={messages.length > 0 ? "2xl" : "3xl"}
-          fontWeight={"medium"}
-          mb={1}
-          color={"white"}
-        >
-          Chat Mettalex 🦜🔗
-        </Heading>
+        <Flex direction={"column"} alignItems={"center"}>
+          {/* <Heading
+            fontSize={messages.length > 0 ? "2xl" : "3xl"}
+            fontWeight={"medium"}
+            mb={1}
+            color={"white"}
+            className="w-full "
+          >
+            Chat Mettalex 
+          </Heading> */}
+          <img className="h-24" src={mtlxLogo} />
+        </Flex>
         {messages.length > 0 ? (
           <Heading fontSize="md" fontWeight={"normal"} mb={1} color={"white"}>
             We appreciate feedback!
@@ -349,7 +355,7 @@ export function ChatWindow(props: { conversationId: string }) {
         </InputRightElement>
       </InputGroup>
 
-      {messages.length === 0 ? (
+      {/* {messages.length === 0 ? (
         <footer className="flex justify-center absolute bottom-8">
           <a
             href="https://github.com/langchain-ai/chat-langchainjs"
@@ -362,7 +368,7 @@ export function ChatWindow(props: { conversationId: string }) {
         </footer>
       ) : (
         ""
-      )}
+      )} */}
     </div>
   );
 }
