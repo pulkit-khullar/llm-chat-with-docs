@@ -34,6 +34,25 @@ const MODEL_TYPES = ["openai_gpt_4o"];
 const defaultLlmValue =
   MODEL_TYPES[Math.floor(Math.random() * MODEL_TYPES.length)];
 
+function parseUrlForDocumentName(url: string): string {
+  try {
+    const urlObj = new URL(url);
+    const pathname = urlObj.pathname;
+    const segments = pathname.split('/').filter(Boolean); // Remove empty segments
+
+    // Intelligently pick the last part of the URL as document name or fallback to domain
+    if (segments.length === 0) {
+      return urlObj.hostname;
+    }
+
+    const documentName = segments[segments.length - 1];
+    return documentName.replace(/-/g, ' ').replace(/_/g, ' ').replace(/\.[^/.]+$/, '');
+  } catch (error) {
+    console.error("Error parsing URL:", error);
+    return 'Unknown Document';
+  }
+}
+
 export function ChatWindow(props: { conversationId: string }) {
   const conversationId = props.conversationId;
 
@@ -140,18 +159,33 @@ export function ChatWindow(props: { conversationId: string }) {
             sourceStepName
           ].final_output.output.filter((source: Record<string, any>) => !source.metadata.source.includes("localhost")).map((doc: Record<string, any>) => ({
             url: doc.metadata.source,
-            title: doc.metadata.title,
+            title: parseUrlForDocumentName(doc.metadata.source).toUpperCase(),
           }));
         }
         if (streamedResponse.id !== undefined) {
           runId = streamedResponse.id;
         }
+        // RESPONSE STREAMING
+        if (Array.isArray(streamedResponse?.streamed_output)) {
+          const uniqueList = streamedResponse.streamed_output.reduce((acc, item) => {
+            if (!acc.includes(item)) {
+              acc.push(item);
+            }
+            return acc;
+          }, []);
+
+          accumulatedMessage = uniqueList.join("");
+        }
+
+        // NOT WORKING CODE BY LANGCAHIN
         // if (Array.isArray(streamedResponse?.streamed_output)) {
         //   accumulatedMessage = streamedResponse.streamed_output.join("");
         // }
-        if (streamedResponse?.final_output?.output) {
-          accumulatedMessage = streamedResponse.final_output.output
-        }
+
+        // SINGLERETURN - NO STREAMING
+        // if (streamedResponse?.final_output?.output) {
+        //   accumulatedMessage = streamedResponse.final_output.output
+        // }
         const parsedResult = marked.parse(accumulatedMessage);
 
         setMessages((prevMessages) => {
