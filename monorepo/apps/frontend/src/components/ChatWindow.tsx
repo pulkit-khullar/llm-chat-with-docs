@@ -167,17 +167,33 @@ export function ChatWindow(props: { conversationId: string }) {
         if (streamedResponse.id !== undefined) {
           runId = streamedResponse.id;
         }
-        // RESPONSE STREAMING
-        if (Array.isArray(streamedResponse?.streamed_output)) {
-          const uniqueList = streamedResponse.streamed_output.reduce((acc, item) => {
-            if (!acc.includes(item)) {
-              acc.push(item);
-            }
-            return acc;
-          }, []);
 
-          accumulatedMessage = uniqueList.join("");
+        // RESPONSE STREAMING - Working correctly by checking of previously duplicate value only.
+        if (Array.isArray(streamedResponse?.streamed_output)) {
+          const result: string[] = [];
+          let previousValue: string | null = null;
+
+          streamedResponse.streamed_output.forEach((value) => {
+            if (value !== previousValue) {
+              result.push(value);
+              previousValue = value; // Update the previous value to the current one
+            }
+          });
+
+          accumulatedMessage = result.join("");
         }
+
+        // NOT WORKING | RESPONSE STREAMING - Removes some data as reduce function checks for existing word's
+        // if (Array.isArray(streamedResponse?.streamed_output)) {
+        //   const uniqueList = streamedResponse.streamed_output.reduce((acc, item) => {
+        //     if (!acc.includes(item)) {
+        //       acc.push(item);
+        //     }
+        //     return acc;
+        //   }, []);
+
+        //   accumulatedMessage = uniqueList.join("");
+        // }
 
         // NOT WORKING CODE BY LANGCAHIN
         // if (Array.isArray(streamedResponse?.streamed_output)) {
@@ -188,6 +204,7 @@ export function ChatWindow(props: { conversationId: string }) {
         // if (streamedResponse?.final_output?.output) {
         //   accumulatedMessage = streamedResponse.final_output.output
         // }
+
         const parsedResult = marked.parse(accumulatedMessage);
 
         setMessages((prevMessages) => {
