@@ -1,0 +1,23 @@
+{
+    "projects": [
+      {
+        "name": "frontend",    
+        "src": "apps/frontend",
+        "buildCommand": "yarn build",
+        "outputDirectory": "apps/frontend/build"
+      },
+      {
+        "name": "backend",     
+        "src": "apps/backend", 
+        "buildCommand": "yarn install",
+        "outputDirectory": "apps/backend",
+        "routes": [
+          {
+            "src": "/src/(.*)",
+            "dest": "/src/index.js"
+          }
+        ]
+      }
+    ]
+  }
+  
