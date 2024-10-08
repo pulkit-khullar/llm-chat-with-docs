@@ -71,7 +71,7 @@ export function ChatWindow(props: { conversationId: string }) {
   useEffect(() => {
     setLlm(searchParams.get("llm") ?? defaultLlmValue);
     setLlmIsLoading(false);
-  }, []);
+  }, [searchParams]);
 
   const [chatHistory, setChatHistory] = useState<
     { human: string; ai: string }[]
@@ -278,7 +278,7 @@ export function ChatWindow(props: { conversationId: string }) {
           >
             Chat Mettalex 
           </Heading> */}
-          <img className="h-24" src={mtlxLogo} />
+          <img className="h-24" src={mtlxLogo} alt="me" />
         </Flex>
         {messages.length > 0 ? (
           <Heading fontSize="md" fontWeight={"normal"} mb={1} color={"white"}>
