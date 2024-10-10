@@ -14,12 +14,12 @@ app.use(cors())
 
 const router = express.Router();
 
-app.post("/chat/stream_log", stream_log);
-app.post("/feedback", postFeedback);
-app.patch("/feedback", patchFeedback);
-app.post("/get_trace", postPollForRun);
-app.post("/ingest", ingestDocs)
-app.get("/health", async (req: Request, res: Response) => {
+router.post("/chat/stream_log", stream_log);
+router.post("/feedback", postFeedback);
+router.patch("/feedback", patchFeedback);
+router.post("/get_trace", postPollForRun);
+router.post("/ingest", ingestDocs)
+router.get("/health", async (req: Request, res: Response) => {
   res.status(200).json({
     status: "OK"
   })
