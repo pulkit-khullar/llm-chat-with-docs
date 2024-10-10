@@ -5,9 +5,15 @@
   "scripts": {
     "start": "cross-env node dist/index.js",
     "dev": "cross-env ts-node src/index.ts",
-    "build": "tsc",
+    "clean": "rm -rf ./frontend/build && rm -rf ./build && rm -rf ./dist",
+    "build:fe": "yarn --cwd frontend build && mv ./frontend/build ./build",
+    "build:be": "tsc",
+    "build": "yarn run build:fe && yarn run build:be",
+    "clean:build": "yarn run clean && yarn run build",
     "lint": "eslint src --ext ts",
-    "test": "jest"
+    "test": "jest",
+    "install:deps": "yarn --cwd frontend && yarn install",
+    "clean:install:build": "yarn run clean && yarn run install:deps && yarn run build"
   },
   "keywords": [],
   "author": "",

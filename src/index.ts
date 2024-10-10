@@ -7,12 +7,15 @@ import  { stream_log } from './chat/stream_log';
 import { patchFeedback, postFeedback } from './feedback/feedback';
 import { postPollForRun } from './trace/get_trace';
 import { ingestDocs } from './ingestion/ingest';
+import path from 'path';
 
 const app = express();
 app.use(express.json()); // Middleware to parse JSON
 app.use(cors())
 
 const router = express.Router();
+
+app.use(express.static('build'));
 
 router.post("/chat/stream_log", stream_log);
 router.post("/feedback", postFeedback);
