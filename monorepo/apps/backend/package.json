@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "cross-env ts-node src/index.ts",
+    "start": "cross-env node dist/index.js",
+    "dev": "cross-env ts-node src/index.ts",
     "build": "tsc",
     "lint": "eslint src --ext ts",
     "test": "jest"
