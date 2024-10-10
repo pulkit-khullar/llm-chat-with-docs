@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-import express from 'express';
+import express, { Request, Response } from 'express';
 import cors from 'cors';
 import  { stream_log } from './chat/stream_log';
 import { patchFeedback, postFeedback } from './feedback/feedback';
@@ -19,6 +19,11 @@ app.post("/feedback", postFeedback);
 app.patch("/feedback", patchFeedback);
 app.post("/get_trace", postPollForRun);
 app.post("/ingest", ingestDocs)
+app.get("/health", async (req: Request, res: Response) => {
+  res.status(200).json({
+    status: "OK"
+  })
+})
 
 // Mount API routes
 app.use('/api', router);
