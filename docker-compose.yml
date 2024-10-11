@@ -1,0 +1,28 @@
+services:
+  node-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - chromadb
+    restart: always
+
+  chromadb:
+    image: chromadb/chroma:latest
+    environment:
+      CHROMA_SERVER_CORS_ALLOW_ORIGINS: '["*"]'
+    volumes:
+      - chromadb_data:/data
+    ports:
+      - "8000:8000"  # Adjust this port if ChromaDB uses a different port
+    restart: always
+
+volumes:
+  chromadb_data:

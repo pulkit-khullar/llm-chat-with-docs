@@ -52,7 +52,7 @@ const getRetriever = async () => {
 
     const vectorstore = new Chroma(embeddings, {
         collectionName: "Mettalex_agent_docs",
-        url: "http://localhost:8000",
+        url: "http://chromadb:8000",
         collectionMetadata: {
             source: "source",
             title: "title",

@@ -20,6 +20,9 @@ export const ingestDocs = async (req: Request, res: Response) => {
       // });
 
       const loader = new PuppeteerWebBaseLoader("https://mettalex.com/", {
+        launchOptions: {
+          args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        },
       })
       return loader.load();
     };
@@ -29,6 +32,9 @@ export const ingestDocs = async (req: Request, res: Response) => {
       // const loader = new SitemapLoader("https://docs.mettalex.com/");
 
       const loader = new PuppeteerWebBaseLoader(url, {
+        launchOptions: {
+          args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        },
       })
       return loader.load();
     };
@@ -115,7 +121,7 @@ export const ingestDocs = async (req: Request, res: Response) => {
     // Initialize Chroma Vector Store
     const vectorStore = await Chroma.fromDocuments(docsTransformed, embeddings, {
       collectionName: "Mettalex_agent_docs",
-      url: "http://localhost:8000", // Ensure ChromaDB is running at this URL
+      url: "http://chromadb:8000", // Ensure ChromaDB is running at this URL
     });
 
     // Indexing process
