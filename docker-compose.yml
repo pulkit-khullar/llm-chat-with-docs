@@ -1,3 +1,5 @@
+version: '3.9'
+
 services:
   node-app:
     build:
@@ -12,17 +14,31 @@ services:
       - NODE_ENV=production
     depends_on:
       - chromadb
+    networks:
+      - net
     restart: always
 
   chromadb:
     image: chromadb/chroma:latest
+    container_name: chromadb-container
     environment:
-      CHROMA_SERVER_CORS_ALLOW_ORIGINS: '["*"]'
+      - CHROMA_SERVER_CORS_ALLOW_ORIGINS=["*"]
     volumes:
       - chromadb_data:/data
     ports:
-      - "8000:8000"  # Adjust this port if ChromaDB uses a different port
+      - "8000:8000"  # Ensure that ChromaDB uses port 8000
+    networks:
+      - net
     restart: always
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/api/v1/heartbeat" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
 volumes:
   chromadb_data:
+
+networks:
+  net:
+    driver: bridge

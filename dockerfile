@@ -3,6 +3,7 @@ FROM node:20-slim
 
 # Install Chromium for Puppeteer
 RUN apt-get update && apt-get install -y chromium
+RUN apt-get update -y && apt-get upgrade -y && apt install curl -y
 
 # Set the working directory inside the container
 WORKDIR /usr/src/app
